@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 4 — Fungsi Bawaan MySQL | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 04</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 04 — Built-in Functions</div>
+    <h1 class="page-title">Fungsi<br/><span>Bawaan MySQL</span></h1>
+    <p class="hero-desc">Memanfaatkan fungsi matematika (MOD, EXP), manipulasi string (UPPER, LOWER), dan fungsi agregat (MIN, MAX) yang sudah tersedia di MySQL.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">Fungsi Matematika — MOD &amp; EXP</span>
+      </div>
+      <div class="explanation">
+        <p><strong style="color:var(--accent)">MOD(x, y)</strong> — Menghitung sisa bagi dari x dibagi y (modulo). Contoh: <code>MOD(55, 2)</code> = 1, karena 55 dibagi 2 bersisa 1.</p>
+        <p><strong style="color:var(--accent)">EXP(x)</strong> — Menghitung nilai eksponensial e (≈2.718) dipangkatkan x. Contoh: <code>EXP(8)</code> = 2980.95...</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">StudentID</span>,
+    <span class="col">FirstName</span>,
+    <span class="col">LastName</span>,
+    <span class="fn">MOD</span>(<span class="col">Semester1</span>, <span class="num">2</span>) <span class="kw">AS</span> Semester1,
+    <span class="col">Semester2</span>,
+    <span class="fn">EXP</span>(<span class="col">MarkGrowth</span>) <span class="kw">AS</span> EXP_MarkGrowth
+<span class="kw">FROM</span> <span class="tbl">students</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 5 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>StudentID</th><th>FirstName</th><th>LastName</th><th>Semester1 (MOD)</th><th>Semester2</th><th>EXP_MarkGrowth</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Jose</td><td>Mohit</td><td>0.55</td><td>72.60</td><td>3133.7949...</td></tr>
+            <tr><td>2</td><td>Lala</td><td>Karlina</td><td>0.85</td><td>65.35</td><td>1808.0424...</td></tr>
+            <tr><td>3</td><td>Sultan</td><td>Hadi</td><td>1.32</td><td>50.25</td><td>138.3795...</td></tr>
+            <tr><td>4</td><td>Jaya</td><td>Usman</td><td>0.73</td><td>77.40</td><td>11271.131...</td></tr>
+            <tr><td>5</td><td>Anjali</td><td>Wijaya</td><td>0.25</td><td>90.75</td><td>4.4816...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">5 rows in set (0.02 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">Fungsi String — UPPER &amp; LOWER</span>
+      </div>
+      <div class="explanation">
+        <p><strong style="color:var(--accent)">UPPER(str)</strong> — Mengubah semua karakter dalam string menjadi huruf kapital. Contoh: <code>'Jose'</code> → <code>'JOSE'</code>.</p>
+        <p><strong style="color:var(--accent)">LOWER(str)</strong> — Mengubah semua karakter dalam string menjadi huruf kecil. Contoh: <code>'Mohit'</code> → <code>'mohit'</code>.</p>
+        <p>Fungsi ini berguna untuk normalisasi data teks sebelum perbandingan atau tampilan yang konsisten.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">StudentID</span>,
+    <span class="fn">UPPER</span>(<span class="col">FirstName</span>) <span class="kw">AS</span> FirstName,
+    <span class="fn">LOWER</span>(<span class="col">LastName</span>)  <span class="kw">AS</span> LastName
+<span class="kw">FROM</span> <span class="tbl">students</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 5 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>StudentID</th><th>FirstName</th><th>LastName</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td style="color:var(--accent)">JOSE</td><td style="color:var(--accent2)">mohit</td></tr>
+            <tr><td>2</td><td style="color:var(--accent)">LALA</td><td style="color:var(--accent2)">karlina</td></tr>
+            <tr><td>3</td><td style="color:var(--accent)">SULTAN</td><td style="color:var(--accent2)">hadi</td></tr>
+            <tr><td>4</td><td style="color:var(--accent)">JAYA</td><td style="color:var(--accent2)">usman</td></tr>
+            <tr><td>5</td><td style="color:var(--accent)">ANJALI</td><td style="color:var(--accent2)">wijaya</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">5 rows in set (0.01 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 3</span>
+        <span class="quiz-title">Fungsi Agregat — MIN &amp; MAX</span>
+      </div>
+      <div class="explanation">
+        <p>Fungsi agregat bekerja pada sekumpulan baris dan menghasilkan satu nilai ringkasan. <strong style="color:var(--accent)">MIN()</strong> mengambil nilai terkecil, <strong style="color:var(--accent)">MAX()</strong> mengambil nilai terbesar dari keseluruhan data kolom.</p>
+        <p>Perhatikan bahwa hasilnya hanya <em>1 baris</em> meski tabel memiliki 5 baris — karena fungsi agregat merangkum seluruh data.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="fn">MIN</span>(<span class="col">Semester1</span>) <span class="kw">AS</span> Min1,
+    <span class="fn">MAX</span>(<span class="col">Semester1</span>) <span class="kw">AS</span> Max1,
+    <span class="fn">MIN</span>(<span class="col">Semester2</span>) <span class="kw">AS</span> Min2,
+    <span class="fn">MAX</span>(<span class="col">Semester2</span>) <span class="kw">AS</span> Max2
+<span class="kw">FROM</span> <span class="tbl">students</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 1 row (ringkasan)</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>Min1</th><th>Max1</th><th>Min2</th><th>Max2</th></tr></thead>
+          <tbody>
+            <tr>
+              <td style="color:var(--accent2)">45.32</td>
+              <td style="color:var(--accent)">92.25</td>
+              <td style="color:var(--accent2)">50.25</td>
+              <td style="color:var(--accent)">90.75</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">1 row in set (0.01 sec)</p>
+
+      <div class="tip">Fungsi agregat lain yang sering dipakai: SUM() untuk jumlah total, AVG() untuk rata-rata, COUNT() untuk menghitung jumlah baris.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part3.html">← Part 03</a>
+      <a href="index.html">Home</a>
+      <a href="part5.html">Part 05 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

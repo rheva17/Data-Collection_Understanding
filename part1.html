@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 1 — SELECT & LIMIT | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 01</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 01 — Dasar SQL</div>
+    <h1 class="page-title">SELECT &amp;<br/><span>LIMIT</span></h1>
+    <p class="hero-desc">Pengenalan struktur tabel dan cara mengambil data menggunakan SELECT dengan pembatasan baris menggunakan LIMIT.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-section" style="animation-delay:0.15s">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">Komponen Dasar Tabel</span>
+      </div>
+      <div class="explanation">
+        <p>Sebelum menulis query, kita harus memahami empat komponen dasar struktur tabel dalam basis data relasional:</p>
+        <p><strong style="color:var(--accent)">A = Column</strong> — Kolom merepresentasikan atribut/field dari tabel, seperti <code>nama_produk</code> atau <code>harga</code>.</p>
+        <p><strong style="color:var(--accent)">B = Row</strong> — Baris adalah satu record/entri data dalam tabel.</p>
+        <p><strong style="color:var(--accent)">C = Data</strong> — Nilai aktual yang tersimpan di dalam setiap sel.</p>
+        <p><strong style="color:var(--accent)">D = Table</strong> — Kumpulan baris dan kolom yang merepresentasikan satu entitas.</p>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section" style="animation-delay:0.25s">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">SELECT Kolom Tertentu</span>
+      </div>
+      <div class="explanation">
+        <p>Perintah <code>SELECT</code> digunakan untuk mengambil data dari tabel. Dengan menyebutkan nama kolom secara spesifik, kita hanya mengambil data yang dibutuhkan, bukan semua kolom.</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="cm">-- Melihat semua kolom terlebih dahulu</span>
+<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>;
+
+<span class="cm">-- Mengambil hanya kolom nama_produk dan harga</span>
+<span class="kw">SELECT</span> <span class="col">nama_produk</span>, <span class="col">harga</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>;</pre>
+      </div>
+
+      <div class="tip">Gunakan SELECT * hanya saat eksplorasi awal. Untuk produksi, selalu sebutkan kolom spesifik agar query lebih efisien.</div>
+
+      <p class="result-label">// Output — 10 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>Kotak Pensil DQLab</td><td>62500</td></tr>
+            <tr><td>Flashdisk DQLab 64 GB</td><td>55000</td></tr>
+            <tr><td>Gift Voucher DQLab 100rb</td><td>100000</td></tr>
+            <tr><td>Flashdisk DQLab 32 GB</td><td>40000</td></tr>
+            <tr><td>Gift Voucher DQLab 250rb</td><td>250000</td></tr>
+            <tr><td>Pulpen Multifunction + Laser DQLab</td><td>92500</td></tr>
+            <tr><td>Tas Travel Organizer DQLab</td><td>48000</td></tr>
+            <tr><td>Gantungan Kunci DQLab</td><td>15800</td></tr>
+            <tr><td>Buku Planner Agenda DQLab</td><td>92000</td></tr>
+            <tr><td>Sticky Notes DQLab 500 sheets</td><td>55000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">10 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz-section" style="animation-delay:0.35s">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 3</span>
+        <span class="quiz-title">SELECT dengan LIMIT</span>
+      </div>
+      <div class="explanation">
+        <p>Klausa <code>LIMIT</code> membatasi jumlah baris yang dikembalikan oleh query. Ini sangat berguna saat tabel memiliki ribuan baris dan kita hanya perlu melihat sebagian kecil sebagai preview atau pengujian.</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="kw">SELECT</span> <span class="col">nama_produk</span>, <span class="col">harga</span>
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span>
+<span class="kw">LIMIT</span> <span class="num">5</span>;</pre>
+      </div>
+
+      <p class="result-label">// Output — 5 rows (dibatasi)</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>Kotak Pensil DQLab</td><td>62500</td></tr>
+            <tr><td>Flashdisk DQLab 64 GB</td><td>55000</td></tr>
+            <tr><td>Gift Voucher DQLab 100rb</td><td>100000</td></tr>
+            <tr><td>Flashdisk DQLab 32 GB</td><td>40000</td></tr>
+            <tr><td>Gift Voucher DQLab 250rb</td><td>250000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">5 rows in set (0.00 sec)</p>
+    </div>
+
+  </div><!-- .content -->
+
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="index.html">Home</a>
+      <a href="part2.html">Part 02 →</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+  document.querySelectorAll('.quiz-section').forEach((el, i) => {
+    el.style.animationDelay = (0.15 + i * 0.1) + 's';
+  });
+</script>
+</body>
+</html>

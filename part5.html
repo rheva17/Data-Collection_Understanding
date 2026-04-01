@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 5 — CASE WHEN | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 05</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 05 — Logika Kondisional</div>
+    <h1 class="page-title">CASE<br/><span>WHEN</span></h1>
+    <p class="hero-desc">Menambahkan logika kondisional (seperti if-else) langsung di dalam query SQL untuk mengklasifikasikan dan memberi label pada data secara otomatis.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">CASE WHEN — Kategori Performa Order</span>
+      </div>
+      <div class="explanation">
+        <p><code>CASE WHEN</code> bekerja seperti if-else: MySQL mengevaluasi kondisi dari atas ke bawah dan menggunakan hasil dari kondisi pertama yang terpenuhi. Jika tidak ada yang cocok, <code>ELSE</code> menjadi nilai default.</p>
+        <p>Query ini juga menggunakan <code>GROUP BY</code> untuk mengelompokkan baris berdasarkan <code>orderNumber</code> dan <code>SUM()</code> untuk menjumlahkan total per order.</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">orderNumber</span>,
+    <span class="fn">SUM</span>(<span class="col">quantityOrdered</span> <span class="op">*</span> <span class="col">priceEach</span>) <span class="kw">AS</span> total,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> <span class="fn">SUM</span>(<span class="col">quantityOrdered</span> <span class="op">*</span> <span class="col">priceEach</span>) <span class="op">&gt;=</span> <span class="num">50000</span>
+            <span class="kw">THEN</span> <span class="str">'Target Achieved'</span>
+        <span class="kw">WHEN</span> <span class="fn">SUM</span>(<span class="col">quantityOrdered</span> <span class="op">*</span> <span class="col">priceEach</span>) <span class="op">&lt;=</span> <span class="num">20000</span>
+            <span class="kw">THEN</span> <span class="str">'Less performed'</span>
+        <span class="kw">ELSE</span> <span class="str">'Follow Up'</span>
+    <span class="kw">END AS</span> remark
+<span class="kw">FROM</span> <span class="tbl">orderdetails</span>
+<span class="kw">GROUP BY</span> <span class="col">orderNumber</span>;</pre>
+      </div>
+
+      <!-- Logic diagram -->
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:20px 24px;margin-bottom:20px;">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:0.1em">// LOGIKA KONDISI</p>
+        <div style="display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:12px;">
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(124,255,232,0.08);border:1px solid rgba(124,255,232,0.2);border-radius:3px">
+            <span style="color:var(--muted)">IF</span>
+            <span style="color:var(--accent3)">total ≥ 50.000</span>
+            <span style="color:var(--muted)">→</span>
+            <span style="color:var(--accent);font-weight:700">Target Achieved</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.2);border-radius:3px">
+            <span style="color:var(--muted)">ELIF</span>
+            <span style="color:var(--accent3)">total ≤ 20.000</span>
+            <span style="color:var(--muted)">→</span>
+            <span style="color:var(--accent2);font-weight:700">Less performed</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:rgba(255,217,61,0.06);border:1px solid rgba(255,217,61,0.2);border-radius:3px">
+            <span style="color:var(--muted)">ELSE</span>
+            <span style="color:var(--muted)">(20.001 – 49.999)</span>
+            <span style="color:var(--muted)">→</span>
+            <span style="color:var(--accent3);font-weight:700">Follow Up</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="result-label">// Output (sebagian) — dikelompokkan per orderNumber</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>orderNumber</th><th>total</th><th>remark</th></tr></thead>
+          <tbody>
+            <tr><td>10100</td><td>10223.83</td><td style="color:var(--accent2)">Less performed</td></tr>
+            <tr><td>10101</td><td>10549.01</td><td style="color:var(--accent2)">Less performed</td></tr>
+            <tr><td>10102</td><td>5494.78</td><td style="color:var(--accent2)">Less performed</td></tr>
+            <tr><td>10103</td><td>50218.95</td><td style="color:var(--accent)">Target Achieved</td></tr>
+            <tr><td>10104</td><td>40206.20</td><td style="color:var(--accent3)">Follow Up</td></tr>
+            <tr><td>10105</td><td>53959.21</td><td style="color:var(--accent)">Target Achieved</td></tr>
+            <tr><td>10106</td><td>52151.81</td><td style="color:var(--accent)">Target Achieved</td></tr>
+            <tr><td>10107</td><td>22292.62</td><td style="color:var(--accent3)">Follow Up</td></tr>
+            <tr><td>10108</td><td>51001.22</td><td style="color:var(--accent)">Target Achieved</td></tr>
+            <tr><td>10116</td><td>1627.56</td><td style="color:var(--accent2)">Less performed</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">CASE WHEN — Kategori Nilai Transaksi (High/Medium/Low)</span>
+      </div>
+      <div class="explanation">
+        <p>Query ini mengkategorikan setiap baris transaksi secara individual (tanpa GROUP BY) ke dalam tiga segmen nilai. Operator <code>BETWEEN</code> pada kondisi Medium bersifat inklusif — nilai 100.000 dan 300.000 termasuk di dalamnya.</p>
+        <p>Hasil diurutkan berdasarkan <code>kode_transaksi</code> dan <code>no_urut</code> menggunakan <code>ORDER BY</code> dengan dua kolom sekaligus.</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">kode_transaksi</span>, <span class="col">kode_pelanggan</span>, <span class="col">no_urut</span>,
+    <span class="col">kode_produk</span>, <span class="col">nama_produk</span>, <span class="col">qty</span>,
+    (<span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span>) <span class="kw">AS</span> total,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> (<span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span>) <span class="op">&gt;</span> <span class="num">300000</span>
+            <span class="kw">THEN</span> <span class="str">'High'</span>
+        <span class="kw">WHEN</span> (<span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span>) <span class="kw">BETWEEN</span> <span class="num">100000</span> <span class="kw">AND</span> <span class="num">300000</span>
+            <span class="kw">THEN</span> <span class="str">'Medium'</span>
+        <span class="kw">ELSE</span> <span class="str">'Low'</span>
+    <span class="kw">END AS</span> kategori
+<span class="kw">FROM</span> <span class="tbl">ms_transaksi</span>
+<span class="kw">ORDER BY</span> <span class="col">kode_transaksi</span>, <span class="col">no_urut</span>;</pre>
+      </div>
+
+      <p class="result-label">// Output — 15 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_transaksi</th><th>kode_pelanggan</th><th>nama_produk</th><th>qty</th><th>total</th><th>kategori</th></tr></thead>
+          <tbody>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>Kotak Pensil DQLab</td><td>5</td><td>312500</td><td style="color:var(--accent)">High</td></tr>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>Flashdisk DQLab 32 GB</td><td>1</td><td>100000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>Buku Planner Agenda DQLab</td><td>3</td><td>276000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>Flashdisk DQLab 32 GB</td><td>3</td><td>120000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-002</td><td>dqlabcust01</td><td>Gift Voucher DQLab 100rb</td><td>2</td><td>200000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-002</td><td>dqlabcust01</td><td>Sticky Note DQLab 500 Sheets</td><td>5</td><td>275000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-002</td><td>dqlabcust01</td><td>Tas Travel Organizer DQLab</td><td>1</td><td>48000</td><td style="color:var(--accent2)">Low</td></tr>
+            <tr><td>tr-003</td><td>dqlabcust03</td><td>Flashdisk DQLab 64 GB</td><td>2</td><td>110000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-004</td><td>dqlabcust03</td><td>Sticky Notes DQLab 500 Sheets</td><td>5</td><td>275000</td><td style="color:var(--accent3)">Medium</td></tr>
+            <tr><td>tr-005</td><td>dqlabcust05</td><td>Kotak Pensil DQLab</td><td>1</td><td>62500</td><td style="color:var(--accent2)">Low</td></tr>
+            <tr><td>tr-005</td><td>dqlabcust05</td><td>Flashdisk DQLab 32 GB</td><td>2</td><td>80000</td><td style="color:var(--accent2)">Low</td></tr>
+            <tr><td>tr-006</td><td>dqlabcust02</td><td>Gift Voucher DQLab 250rb</td><td>4</td><td>1000000</td><td style="color:var(--accent);font-weight:700">High</td></tr>
+            <tr><td>tr-006</td><td>dqlabcust02</td><td>Gantungan Kunci DQLab</td><td>2</td><td>31600</td><td style="color:var(--accent2)">Low</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">15 rows in set (0.00 sec)</p>
+      <div class="tip">BETWEEN bersifat inklusif di kedua ujungnya. BETWEEN 100000 AND 300000 mencakup nilai 100000, 150000, 200000, hingga 300000.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part4.html">← Part 04</a>
+      <a href="index.html">Home</a>
+      <a href="part6.html">Part 06 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

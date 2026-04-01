@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 7 — UNION & Subquery | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 07</span>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 07 — Menggabungkan Query</div>
+    <h1 class="page-title">UNION &amp;<br/><span>Subquery</span></h1>
+    <p class="hero-desc">Menggabungkan hasil dari beberapa query menggunakan UNION ALL, serta memfilter data menggunakan operator IN dengan subquery atau daftar nilai.</p>
+  </div>
+  <div class="content">
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">UNION ALL — Gabungkan Dua Tabel</span>
+      </div>
+      <div class="explanation">
+        <p><code>UNION ALL</code> menggabungkan hasil dari dua query menjadi satu hasil. Berbeda dengan <code>UNION</code> biasa, <code>UNION ALL</code> mempertahankan semua baris termasuk duplikat. Kedua query yang digabungkan harus memiliki jumlah dan tipe kolom yang sama.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="op">*</span>, <span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span> <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">tabel_a</span>
+<span class="kw">WHERE</span> <span class="col">kode_pelanggan</span> <span class="op">=</span> <span class="str">'polibest03'</span>
+
+<span class="kw">UNION ALL</span>
+
+<span class="kw">SELECT</span> <span class="op">*</span>, <span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span> <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">tabel_b</span>
+<span class="kw">WHERE</span> <span class="col">kode_pelanggan</span> <span class="op">=</span> <span class="str">'polibest03'</span>;</pre>
+      </div>
+      <div class="tip">UNION menghapus duplikat (lebih lambat). UNION ALL mempertahankan semua baris (lebih cepat). Gunakan UNION ALL jika yakin tidak ada duplikat atau duplikat memang diperlukan.</div>
+      <p class="result-label">// Output — 3 rows (gabungan dari tabel_a dan tabel_b)</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_transaksi</th><th>kode_pelanggan</th><th>kode_produk</th><th>nama_produk</th><th>qty</th><th>harga</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>tr-003</td><td>polibest03</td><td>prod-02</td><td>Flashdisk 64 GB</td><td>2</td><td>55000</td><td>110000</td></tr>
+            <tr><td>tr-004</td><td>polibest03</td><td>prod-10</td><td>Sticky Note 500 Sheets</td><td>5</td><td>55000</td><td>275000</td></tr>
+            <tr><td>tr-004</td><td>polibest03</td><td>prod-04</td><td>Flashdisk 32 GB</td><td>4</td><td>40000</td><td>160000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">3 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">JOIN + WHERE IN — Filter Berdasarkan Daftar Nilai</span>
+      </div>
+      <div class="explanation">
+        <p>Operator <code>IN</code> memungkinkan filter berdasarkan daftar nilai sekaligus, lebih ringkas dibanding banyak kondisi <code>OR</code>. Query ini mencari pelanggan yang pernah membeli salah satu dari tiga produk tertentu, menggunakan JOIN antara tabel pelanggan dan tabel penjualan.</p>
+        <p><code>DISTINCT</code> ditambahkan agar satu pelanggan yang membeli beberapa produk dari daftar tidak muncul berulang.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT DISTINCT</span>
+    p.<span class="col">kode_pelanggan</span>,
+    p.<span class="col">nama_customer</span>,
+    p.<span class="col">alamat</span>
+<span class="kw">FROM</span> <span class="tbl">ms_pelanggan</span> p
+<span class="kw">JOIN</span> <span class="tbl">tr_penjualan</span> t
+    <span class="kw">ON</span> p.<span class="col">kode_pelanggan</span> <span class="op">=</span> t.<span class="col">kode_pelanggan</span>
+<span class="kw">WHERE</span> t.<span class="col">nama_produk</span> <span class="kw">IN</span> (
+    <span class="str">'Kotak Pensil DQLab'</span>,
+    <span class="str">'Flashdisk DQLab 32 GB'</span>,
+    <span class="str">'Sticky Notes DQLab 500 Sheets'</span>
+);</pre>
+      </div>
+      <p class="result-label">// Output — 4 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_pelanggan</th><th>nama_customer</th><th>alamat</th></tr></thead>
+          <tbody>
+            <tr><td>polibest01</td><td>Evi Novianti</td><td>Jl. Argoluwih No. 15, Kel.Ledok, Kec.Argomulyo, Kota Salatiga</td></tr>
+            <tr><td>polibest03</td><td>Unang Handoko</td><td>Jl. Argoluwih No. 16, Kel.Ledok, Kec.Argomulyo, Kota Salatiga</td></tr>
+            <tr><td>polibest05</td><td>Tomy Sinaga</td><td>Jl. Argoluwih No. 18, Kel.Ledok, Kec.Argomulyo, Kota Salatiga</td></tr>
+            <tr><td>polibest07</td><td>Agus Cahyono</td><td>Perum Villa Asri No. 16, Kel.Ledok, Kec.Argomulyo, Kota Salatiga</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">4 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 3</span>
+        <span class="quiz-title">UNION ALL dari Dua Tabel Berbeda + Filter BETWEEN</span>
+      </div>
+      <div class="explanation">
+        <p>Query ini menggabungkan produk dari dua tabel berbeda (<code>ms_produk_1</code> dan <code>ms_produk_2</code>) dengan kondisi filter berbeda di setiap bagian. Operator <code>BETWEEN</code> pada string bekerja berdasarkan urutan alfanumerik.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="col">nama_produk</span>, <span class="col">kode_produk</span>, <span class="col">harga</span>
+<span class="kw">FROM</span> <span class="tbl">ms_produk_1</span>
+<span class="kw">WHERE</span> <span class="col">harga</span> <span class="op">&lt;</span> <span class="num">100000</span>
+  <span class="kw">AND</span> <span class="col">kode_produk</span> <span class="kw">BETWEEN</span> <span class="str">'prod-01'</span> <span class="kw">AND</span> <span class="str">'prod-05'</span>
+
+<span class="kw">UNION ALL</span>
+
+<span class="kw">SELECT</span> <span class="col">nama_produk</span>, <span class="col">kode_produk</span>, <span class="col">harga</span>
+<span class="kw">FROM</span> <span class="tbl">ms_produk_2</span>
+<span class="kw">WHERE</span> <span class="col">harga</span> <span class="op">&lt;</span> <span class="num">50000</span>
+  <span class="kw">AND</span> <span class="col">kode_produk</span> <span class="kw">BETWEEN</span> <span class="str">'prod-06'</span> <span class="kw">AND</span> <span class="str">'prod-10'</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 5 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>nama_produk</th><th>kode_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>Kotak Pensil</td><td>prod-01</td><td>62500</td></tr>
+            <tr><td>Flashdisk 64GB</td><td>prod-02</td><td>55000</td></tr>
+            <tr><td>Flashdisk 32GB</td><td>prod-04</td><td>40000</td></tr>
+            <tr><td>Tas Travel Organizer</td><td>prod-07</td><td>48000</td></tr>
+            <tr><td>Gantungan Kunci</td><td>prod-08</td><td>15800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">5 rows in set (0.00 sec)</p>
+    </div>
+
+  </div>
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part6.html">← Part 06</a>
+      <a href="index.html">Home</a>
+      <a href="part8.html">Part 08 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

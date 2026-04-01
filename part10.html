@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 10 — GROUP BY & HAVING | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 10</span>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 10 — Agregasi Lanjutan</div>
+    <h1 class="page-title">GROUP BY<br/><span>&amp; HAVING</span></h1>
+    <p class="hero-desc">Mengelompokkan data berdasarkan kolom tertentu, menghitung agregat per kelompok, lalu memfilter kelompok menggunakan HAVING.</p>
+  </div>
+  <div class="content">
+
+    <!-- QUIZ 1 - Query 1 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1 — Query 1</span>
+        <span class="quiz-title">GROUP BY + SUM</span>
+      </div>
+      <div class="explanation">
+        <p><code>GROUP BY</code> mengelompokkan baris yang memiliki nilai sama pada kolom yang ditentukan. Fungsi agregat seperti <code>SUM()</code> kemudian dihitung per kelompok — bukan untuk keseluruhan tabel.</p>
+        <p>Tanpa GROUP BY, <code>SUM()</code> akan menjumlahkan seluruh baris. Dengan GROUP BY, <code>SUM()</code> menjumlahkan per <code>ordernumber</code>.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">ordernumber</span>,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span>) <span class="kw">AS</span> itemscount,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span> <span class="op">*</span> <span class="col">priceeach</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">orderdetails</span>
+<span class="kw">GROUP BY</span> <span class="col">ordernumber</span>;</pre>
+      </div>
+      <p class="result-label">// Output (sebagian) — dikelompokkan per order</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>ordernumber</th><th>itemscount</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>10100</td><td>151</td><td>10223.83</td></tr>
+            <tr><td>10101</td><td>142</td><td>10549.01</td></tr>
+            <tr><td>10103</td><td>541</td><td>50218.95</td></tr>
+            <tr><td>10105</td><td>545</td><td>53959.21</td></tr>
+            <tr><td>10106</td><td>675</td><td>52151.81</td></tr>
+            <tr><td>10126</td><td>617</td><td>57131.92</td></tr>
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);font-style:italic">... banyak baris lainnya</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 1 - Query 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1 — Query 2</span>
+        <span class="quiz-title">GROUP BY + HAVING</span>
+      </div>
+      <div class="explanation">
+        <p><code>HAVING</code> adalah filter yang bekerja setelah GROUP BY — berbeda dengan <code>WHERE</code> yang memfilter baris individual sebelum pengelompokan. <code>HAVING</code> memfilter kelompok berdasarkan hasil agregasi.</p>
+        <p><strong>Aturan penting:</strong> <code>WHERE</code> tidak bisa menggunakan alias dari kolom agregat, tapi <code>HAVING</code> bisa.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">ordernumber</span>,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span>) <span class="kw">AS</span> itemscount,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span> <span class="op">*</span> <span class="col">priceeach</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">orderdetails</span>
+<span class="kw">GROUP BY</span> <span class="col">ordernumber</span>
+<span class="kw">HAVING</span> total <span class="op">&gt;</span> <span class="num">1000</span>;</pre>
+      </div>
+
+      <!-- WHERE vs HAVING comparison -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+        <div style="background:rgba(255,107,107,0.06);border:1px solid rgba(255,107,107,0.2);border-radius:4px;padding:14px 16px">
+          <p style="font-family:var(--mono);font-size:11px;color:var(--accent2);margin-bottom:8px;font-weight:700">WHERE</p>
+          <p style="font-size:13px;color:#c0c0d8;line-height:1.6">Memfilter baris <em>sebelum</em> pengelompokan. Tidak bisa menggunakan kolom agregat (SUM, COUNT, dll).</p>
+        </div>
+        <div style="background:rgba(124,255,232,0.06);border:1px solid rgba(124,255,232,0.2);border-radius:4px;padding:14px 16px">
+          <p style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:8px;font-weight:700">HAVING</p>
+          <p style="font-size:13px;color:#c0c0d8;line-height:1.6">Memfilter kelompok <em>setelah</em> pengelompokan. Bisa menggunakan alias kolom agregat.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 1 - Query 3 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1 — Query 3</span>
+        <span class="quiz-title">HAVING dengan Kondisi Ganda (AND)</span>
+      </div>
+      <div class="explanation">
+        <p>HAVING bisa menggunakan beberapa kondisi sekaligus dengan operator AND/OR, sama seperti WHERE. Query ini mencari order dengan total di atas 1.000 dan jumlah item di atas 600.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="col">ordernumber</span>,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span>) <span class="kw">AS</span> itemscount,
+    <span class="fn">SUM</span>(<span class="col">quantityordered</span> <span class="op">*</span> <span class="col">priceeach</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">orderdetails</span>
+<span class="kw">GROUP BY</span> <span class="col">ordernumber</span>
+<span class="kw">HAVING</span>
+    total <span class="op">&gt;</span> <span class="num">1000</span>
+    <span class="kw">AND</span> itemscount <span class="op">&gt;</span> <span class="num">600</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 22 rows (hanya order dengan total > 1000 DAN item > 600)</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>ordernumber</th><th>itemscount</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>10106</td><td style="color:var(--accent)">675</td><td>52151.81</td></tr>
+            <tr><td>10126</td><td style="color:var(--accent)">617</td><td>57131.92</td></tr>
+            <tr><td>10135</td><td style="color:var(--accent)">607</td><td>55601.84</td></tr>
+            <tr><td>10165</td><td style="color:var(--accent)">670</td><td>67392.85</td></tr>
+            <tr><td>10168</td><td style="color:var(--accent)">642</td><td>50743.65</td></tr>
+            <tr><td>10204</td><td style="color:var(--accent)">619</td><td>58793.53</td></tr>
+            <tr><td>10222</td><td style="color:var(--accent)">717</td><td>56822.65</td></tr>
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);font-style:italic">... 15 baris lainnya</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">22 rows in set (0.01 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">JOIN + WHERE + GROUP BY + HAVING</span>
+      </div>
+      <div class="explanation">
+        <p>Query paling kompleks — menggabungkan empat klausa sekaligus. Urutannya: JOIN dulu untuk menggabungkan tabel, WHERE untuk filter baris awal, GROUP BY untuk mengelompokkan, lalu HAVING untuk filter kelompok.</p>
+        <p>Urutan eksekusi SQL: <code>FROM</code> → <code>JOIN</code> → <code>WHERE</code> → <code>GROUP BY</code> → <code>HAVING</code> → <code>SELECT</code> → <code>ORDER BY</code></p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    o.<span class="col">ordernumber</span>,
+    o.<span class="col">status</span>,
+    <span class="fn">SUM</span>(od.<span class="col">quantityordered</span> <span class="op">*</span> od.<span class="col">priceeach</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">orders</span> o
+<span class="kw">JOIN</span> <span class="tbl">orderdetails</span> od
+    <span class="kw">ON</span> o.<span class="col">ordernumber</span> <span class="op">=</span> od.<span class="col">ordernumber</span>
+<span class="kw">WHERE</span> o.<span class="col">status</span> <span class="op">=</span> <span class="str">'Shipped'</span>
+<span class="kw">GROUP BY</span> o.<span class="col">ordernumber</span>, o.<span class="col">status</span>
+<span class="kw">HAVING</span> total <span class="op">&gt;</span> <span class="num">1500</span>;</pre>
+      </div>
+      <p class="result-label">// Output — hanya order berstatus 'Shipped' dengan total > 1500</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>ordernumber</th><th>status</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>10100</td><td style="color:var(--accent)">Shipped</td><td>10223.83</td></tr>
+            <tr><td>10101</td><td style="color:var(--accent)">Shipped</td><td>10549.01</td></tr>
+            <tr><td>10103</td><td style="color:var(--accent)">Shipped</td><td>50218.95</td></tr>
+            <tr><td>10105</td><td style="color:var(--accent)">Shipped</td><td>53959.21</td></tr>
+            <tr><td>10106</td><td style="color:var(--accent)">Shipped</td><td>52151.81</td></tr>
+            <tr><td>10128</td><td style="color:var(--accent)">Shipped</td><td>13884.99</td></tr>
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);font-style:italic">... baris lainnya</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:18px 20px;margin-top:20px">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:14px;letter-spacing:0.1em">// URUTAN EKSEKUSI SQL</p>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-family:var(--mono);font-size:12px">
+          <span style="background:rgba(124,255,232,0.1);color:var(--accent);padding:5px 10px;border-radius:2px">FROM</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(124,255,232,0.1);color:var(--accent);padding:5px 10px;border-radius:2px">JOIN</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(255,107,107,0.1);color:var(--accent2);padding:5px 10px;border-radius:2px">WHERE</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(255,217,61,0.1);color:var(--accent3);padding:5px 10px;border-radius:2px">GROUP BY</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(255,217,61,0.1);color:var(--accent3);padding:5px 10px;border-radius:2px">HAVING</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(124,255,232,0.1);color:var(--accent);padding:5px 10px;border-radius:2px">SELECT</span>
+          <span style="color:var(--muted)">→</span>
+          <span style="background:rgba(124,255,232,0.1);color:var(--accent);padding:5px 10px;border-radius:2px">ORDER BY</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part9.html">← Part 09</a>
+      <a href="index.html">Home</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

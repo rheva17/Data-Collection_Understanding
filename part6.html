@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 6 — JOIN Tabel | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 06</span>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 06 — Relasi Tabel</div>
+    <h1 class="page-title">JOIN<br/><span>Tabel</span></h1>
+    <p class="hero-desc">Menggabungkan data dari dua tabel berbeda menggunakan INNER JOIN berdasarkan kolom yang berelasi.</p>
+  </div>
+  <div class="content">
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">INNER JOIN — Dua Cara Penulisan</span>
+      </div>
+      <div class="explanation">
+        <p><code>INNER JOIN</code> menggabungkan baris dari dua tabel yang memiliki nilai cocok pada kolom yang ditentukan. Hanya baris yang memiliki kecocokan di <em>kedua tabel</em> yang akan ditampilkan.</p>
+        <p>Ada dua sintaks yang menghasilkan output identik: menggunakan <code>INNER JOIN ... ON</code> (Query 1), atau menggunakan <code>FROM tabel1, tabel2 WHERE</code> (Query 2 — sintaks lama).</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="cm">-- Query 1: Sintaks modern (direkomendasikan)</span>
+<span class="kw">SELECT</span>
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_transaksi</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_pelanggan</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_produk</span>,
+    <span class="tbl">ms_produk</span>.<span class="col">nama_produk</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">qty</span>,
+    <span class="tbl">ms_produk</span>.<span class="col">harga</span>
+<span class="kw">FROM</span> <span class="tbl">tr_penjualan</span>
+<span class="kw">INNER JOIN</span> <span class="tbl">ms_produk</span>
+    <span class="kw">ON</span> <span class="tbl">tr_penjualan</span>.<span class="col">kode_produk</span> <span class="op">=</span> <span class="tbl">ms_produk</span>.<span class="col">kode_produk</span>;
+
+<span class="cm">-- Query 2: Sintaks lama (implicit join)</span>
+<span class="kw">SELECT</span> ...
+<span class="kw">FROM</span> <span class="tbl">tr_penjualan</span>, <span class="tbl">ms_produk</span>
+<span class="kw">WHERE</span> <span class="tbl">tr_penjualan</span>.<span class="col">kode_produk</span> <span class="op">=</span> <span class="tbl">ms_produk</span>.<span class="col">kode_produk</span>;</pre>
+      </div>
+      <div class="tip">Selalu gunakan sintaks INNER JOIN ... ON untuk query yang lebih mudah dibaca dan dipelihara. Sintaks implicit join (FROM a, b WHERE) adalah gaya lama yang kurang direkomendasikan.</div>
+    </div>
+
+    <hr class="divider"/>
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">INNER JOIN + Kalkulasi Kolom</span>
+      </div>
+      <div class="explanation">
+        <p>Setelah JOIN, kita bisa langsung melakukan kalkulasi antar kolom dari tabel yang berbeda. Di sini <code>ms_produk.harga * tr_penjualan.qty</code> menghasilkan kolom total nilai transaksi.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span>
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_transaksi</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_pelanggan</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">kode_produk</span>,
+    <span class="tbl">ms_produk</span>.<span class="col">nama_produk</span>,
+    <span class="tbl">ms_produk</span>.<span class="col">harga</span>,
+    <span class="tbl">tr_penjualan</span>.<span class="col">qty</span>,
+    (<span class="tbl">ms_produk</span>.<span class="col">harga</span> <span class="op">*</span> <span class="tbl">tr_penjualan</span>.<span class="col">qty</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">tr_penjualan</span>
+<span class="kw">INNER JOIN</span> <span class="tbl">ms_produk</span>
+    <span class="kw">ON</span> <span class="tbl">tr_penjualan</span>.<span class="col">kode_produk</span> <span class="op">=</span> <span class="tbl">ms_produk</span>.<span class="col">kode_produk</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 15 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_transaksi</th><th>kode_pelanggan</th><th>kode_produk</th><th>nama_produk</th><th>harga</th><th>qty</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>prod-01</td><td>Kotak Pensil DQLab</td><td>62500</td><td>5</td><td style="color:var(--accent)">312500</td></tr>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>prod-03</td><td>Gift Voucher DQLab 100rb</td><td>100000</td><td>1</td><td>100000</td></tr>
+            <tr><td>tr-001</td><td>dqlabcust07</td><td>prod-09</td><td>Buku Planner Agenda DQLab</td><td>92000</td><td>3</td><td>276000</td></tr>
+            <tr><td>tr-002</td><td>dqlabcust01</td><td>prod-03</td><td>Gift Voucher DQLab 100rb</td><td>100000</td><td>2</td><td>200000</td></tr>
+            <tr><td>tr-002</td><td>dqlabcust01</td><td>prod-10</td><td>Sticky Notes DQLab 500 sheets</td><td>55000</td><td>5</td><td>275000</td></tr>
+            <tr><td>tr-006</td><td>dqlabcust02</td><td>prod-05</td><td>Gift Voucher DQLab 250rb</td><td>250000</td><td>4</td><td style="color:var(--accent);font-weight:700">1000000</td></tr>
+            <tr><td>tr-006</td><td>dqlabcust02</td><td>prod-08</td><td>Gantungan Kunci DQLab</td><td>15800</td><td>2</td><td>31600</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">15 rows in set (0.00 sec)</p>
+    </div>
+
+  </div>
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part5.html">← Part 05</a>
+      <a href="index.html">Home</a>
+      <a href="part7.html">Part 07 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

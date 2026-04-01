@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 3 — WHERE & Operator Logika | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 03</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 03 — Filter Data</div>
+    <h1 class="page-title">WHERE &amp;<br/><span>Operator Logika</span></h1>
+    <p class="hero-desc">Memfilter data menggunakan klausa WHERE dengan berbagai operator: perbandingan, AND, OR, kalkulasi kolom, dan pengurutan ORDER BY.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">WHERE — Kondisi Tunggal</span>
+      </div>
+      <div class="explanation">
+        <p>Klausa <code>WHERE</code> memfilter baris yang hanya memenuhi kondisi tertentu. Untuk nilai string/teks, gunakan tanda kutip tunggal (<code>'</code>).</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>
+<span class="kw">WHERE</span> <span class="col">nama_produk</span> <span class="op">=</span> <span class="str">'Tas Travel Organizer DQLab'</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 1 row</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>no_urut</th><th>kode_produk</th><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>7</td><td>prod-07</td><td>Tas Travel Organizer DQLab</td><td>48000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">1 row in set (0.01 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">WHERE dengan Operator OR</span>
+      </div>
+      <div class="explanation">
+        <p>Operator <code>OR</code> digunakan ketika ingin memilih baris yang memenuhi <em>salah satu</em> dari beberapa kondisi. Cocok untuk mencari beberapa nilai dalam satu kolom.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>
+<span class="kw">WHERE</span> <span class="col">nama_produk</span> <span class="op">=</span> <span class="str">'Flashdisk DQLab 64 GB'</span>
+   <span class="kw">OR</span> <span class="col">nama_produk</span> <span class="op">=</span> <span class="str">'Tas Travel Organizer DQLab'</span>
+   <span class="kw">OR</span> <span class="col">nama_produk</span> <span class="op">=</span> <span class="str">'Gantungan Kunci DQLab'</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 3 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>no_urut</th><th>kode_produk</th><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>prod-02</td><td>Flashdisk DQLab 64 GB</td><td>55000</td></tr>
+            <tr><td>7</td><td>prod-07</td><td>Tas Travel Organizer DQLab</td><td>48000</td></tr>
+            <tr><td>8</td><td>prod-08</td><td>Gantungan Kunci DQLab</td><td>15800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">3 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 3 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 3</span>
+        <span class="quiz-title">WHERE dengan Operator Perbandingan (&gt;)</span>
+      </div>
+      <div class="explanation">
+        <p>Operator perbandingan seperti <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code> digunakan untuk memfilter data numerik. Query ini mengambil semua produk dengan harga di atas 50.000.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>
+<span class="kw">WHERE</span> <span class="col">harga</span> <span class="op">&gt;</span> <span class="num">50000</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 7 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>no_urut</th><th>kode_produk</th><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>prod-01</td><td>Kotak Pensil DQLab</td><td>62500</td></tr>
+            <tr><td>2</td><td>prod-02</td><td>Flashdisk DQLab 64 GB</td><td>55000</td></tr>
+            <tr><td>3</td><td>prod-03</td><td>Gift Voucher DQLab 100rb</td><td>100000</td></tr>
+            <tr><td>5</td><td>prod-05</td><td>Gift Voucher DQLab 250rb</td><td>250000</td></tr>
+            <tr><td>6</td><td>prod-06</td><td>Pulpen Multifunction + Laser DQLab</td><td>92500</td></tr>
+            <tr><td>9</td><td>prod-09</td><td>Buku Planner Agenda DQLab</td><td>92000</td></tr>
+            <tr><td>10</td><td>prod-10</td><td>Sticky Notes DQLab 500 sheets</td><td>55000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">7 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 4 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 4</span>
+        <span class="quiz-title">WHERE dengan Operator AND</span>
+      </div>
+      <div class="explanation">
+        <p>Operator <code>AND</code> mensyaratkan <em>semua</em> kondisi harus terpenuhi. Berbeda dengan OR yang cukup satu kondisi saja.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span>
+<span class="kw">WHERE</span> <span class="col">nama_produk</span> <span class="op">=</span> <span class="str">'Gantungan Kunci DQLab'</span>
+  <span class="kw">AND</span> <span class="col">harga</span> <span class="op">&lt;</span> <span class="num">50000</span>;</pre>
+      </div>
+      <p class="result-label">// Output — 1 row</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>no_urut</th><th>kode_produk</th><th>nama_produk</th><th>harga</th></tr></thead>
+          <tbody>
+            <tr><td>8</td><td>prod-08</td><td>Gantungan Kunci DQLab</td><td>15800</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">1 row in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 5 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 5</span>
+        <span class="quiz-title">Kalkulasi Kolom + WHERE + ORDER BY DESC</span>
+      </div>
+      <div class="explanation">
+        <p>Query ini menggabungkan tiga fitur sekaligus: membuat kolom kalkulasi baru <code>(qty * harga) AS total</code>, memfilter dengan WHERE, lalu mengurutkan hasil dari nilai terbesar ke terkecil dengan <code>ORDER BY ... DESC</code>.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-lang">SQL</span></div>
+        <pre><span class="kw">SELECT</span> <span class="col">kode_pelanggan</span>, <span class="col">nama_produk</span>, <span class="col">qty</span>, <span class="col">harga</span>,
+       (<span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span>) <span class="kw">AS</span> total
+<span class="kw">FROM</span> <span class="tbl">ms_transaksi</span>
+<span class="kw">WHERE</span> (<span class="col">qty</span> <span class="op">*</span> <span class="col">harga</span>) <span class="op">&gt;=</span> <span class="num">100000</span>
+<span class="kw">ORDER BY</span> total <span class="kw">DESC</span>;</pre>
+      </div>
+      <div class="tip">ORDER BY DESC = dari besar ke kecil (Descending). ORDER BY ASC = dari kecil ke besar (Ascending), ini adalah default jika tidak ditulis.</div>
+      <p class="result-label">// Output — 11 rows, diurutkan dari total terbesar</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_pelanggan</th><th>nama_produk</th><th>qty</th><th>harga</th><th>total</th></tr></thead>
+          <tbody>
+            <tr><td>polibest02</td><td>Gift Voucher 250rb</td><td>4</td><td>250000</td><td style="color:var(--accent);font-weight:700">1000000</td></tr>
+            <tr><td>polibest07</td><td>Kotak Pensil</td><td>5</td><td>62500</td><td>312500</td></tr>
+            <tr><td>polibest07</td><td>Buku Planner Agenda</td><td>3</td><td>92000</td><td>276000</td></tr>
+            <tr><td>polibest05</td><td>Buku Planner Agenda</td><td>3</td><td>92000</td><td>276000</td></tr>
+            <tr><td>polibest01</td><td>Sticky Note 500 Sheets</td><td>5</td><td>55000</td><td>275000</td></tr>
+            <tr><td>polibest03</td><td>Sticky Note 500 Sheets</td><td>5</td><td>55000</td><td>275000</td></tr>
+            <tr><td>polibest01</td><td>Gift Voucher 100rb</td><td>2</td><td>100000</td><td>200000</td></tr>
+            <tr><td>polibest03</td><td>Flashdisk 32 GB</td><td>4</td><td>40000</td><td>160000</td></tr>
+            <tr><td>polibest07</td><td>Flashdisk 32 GB</td><td>3</td><td>40000</td><td>120000</td></tr>
+            <tr><td>polibest03</td><td>Flashdisk 64 GB</td><td>2</td><td>55000</td><td>110000</td></tr>
+            <tr><td>polibest07</td><td>Flashdisk 32 GB</td><td>1</td><td>100000</td><td>100000</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">11 rows in set (0.00 sec)</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part2.html">← Part 02</a>
+      <a href="index.html">Home</a>
+      <a href="part4.html">Part 04 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

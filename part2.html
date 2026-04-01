@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 2 — DISTINCT, Prefix & Alias | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 02</span>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 02 — Seleksi Lanjutan</div>
+    <h1 class="page-title">DISTINCT,<br/><span>Prefix &amp; Alias</span></h1>
+    <p class="hero-desc">Menghilangkan duplikasi data, menggunakan prefix nama tabel, dan memberikan alias pada kolom maupun tabel.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- QUIZ 1 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 1</span>
+        <span class="quiz-title">SELECT DISTINCT</span>
+      </div>
+      <div class="explanation">
+        <p><code>DISTINCT</code> menghilangkan baris duplikat dari hasil query. Tabel <code>ms_pelanggan</code> memiliki 12 baris, namun setelah DISTINCT diterapkan hasilnya menjadi 10 baris — karena beberapa nama customer muncul lebih dari sekali (misal: <em>Tomy Sinaga</em> dan <em>Unang Handoko</em>).</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="cm">-- Tanpa DISTINCT: 12 baris (ada duplikat)</span>
+<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_pelanggan</span>;
+
+<span class="cm">-- Dengan DISTINCT: 10 baris (duplikat dihapus)</span>
+<span class="kw">SELECT DISTINCT</span> <span class="col">nama_customer</span>, <span class="col">alamat</span>
+<span class="kw">FROM</span> <span class="tbl">ms_pelanggan</span>;</pre>
+      </div>
+
+      <p class="result-label">// Output setelah DISTINCT — 10 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>nama_customer</th><th>alamat</th></tr></thead>
+          <tbody>
+            <tr><td>Evi Novianti</td><td>Jl. Argoluwih No. 15, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Heidi Goh</td><td>Jl. Argoluwih No. 15, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Unang Handoko</td><td>Jl. Argoluwih No. 16, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Jokolono Sukarman</td><td>Jl. Argoluwih No. 17, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Tomy Sinaga</td><td>Jl. Argoluwih No. 18, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Irwan Setianto</td><td>Perum Villa Asri No. 15, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Agus Cahyono</td><td>Perum Villa Asri No. 16, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Maria Sirait</td><td>Perum Pondok Indah No. 17, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Ita Nugraha</td><td>Perum Pondok Indah No. 16, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+            <tr><td>Joko Wardoyo</td><td>Perum Grogol Indah No. 16, Kel.Ledok, Kec.Argomulyo, Kota Surakarta</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">10 rows in set (0.01 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 2 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 2</span>
+        <span class="quiz-title">Prefix Nama Tabel</span>
+      </div>
+      <div class="explanation">
+        <p>Penulisan kolom dengan prefix nama tabel menggunakan titik (<code>.</code>) memperjelas kolom berasal dari tabel mana. Ini sangat penting saat melakukan JOIN antara dua tabel yang memiliki nama kolom sama.</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="kw">SELECT</span> <span class="tbl">ms_produk</span>.<span class="col">kode_produk</span>
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span>;</pre>
+      </div>
+
+      <p class="result-label">// Output — 10 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>kode_produk</th></tr></thead>
+          <tbody>
+            <tr><td>prod-01</td></tr><tr><td>prod-02</td></tr><tr><td>prod-03</td></tr>
+            <tr><td>prod-04</td></tr><tr><td>prod-05</td></tr><tr><td>prod-06</td></tr>
+            <tr><td>prod-07</td></tr><tr><td>prod-08</td></tr><tr><td>prod-09</td></tr>
+            <tr><td>prod-10</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">10 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 3 & 4 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 3 &amp; 4</span>
+        <span class="quiz-title">Alias Kolom — AS dan Tanpa AS</span>
+      </div>
+      <div class="explanation">
+        <p>Alias memberikan nama sementara pada kolom di hasil query. Ada dua cara penulisan yang menghasilkan output identik: menggunakan kata kunci <code>AS</code> (Quiz 3) atau langsung menulis nama alias setelah nama kolom (Quiz 4).</p>
+      </div>
+
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="cm">-- Quiz 3: Dengan kata kunci AS</span>
+<span class="kw">SELECT</span> <span class="col">no_urut</span> <span class="kw">AS</span> nomor, <span class="col">nama_produk</span> <span class="kw">AS</span> nama
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span>;
+
+<span class="cm">-- Quiz 4: Tanpa kata kunci AS (hasil sama persis)</span>
+<span class="kw">SELECT</span> <span class="col">no_urut</span> nomor, <span class="col">nama_produk</span> nama
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span>;</pre>
+      </div>
+
+      <div class="tip">Penggunaan AS bersifat opsional namun sangat disarankan untuk keterbacaan query, terutama saat bekerja dalam tim.</div>
+
+      <p class="result-label">// Output (sama untuk Quiz 3 & 4) — 10 rows</p>
+      <div class="result-wrap">
+        <table>
+          <thead><tr><th>nomor</th><th>nama</th></tr></thead>
+          <tbody>
+            <tr><td>1</td><td>Kotak Pensil DQLab</td></tr>
+            <tr><td>2</td><td>Flashdisk DQLab 64 GB</td></tr>
+            <tr><td>3</td><td>Gift Voucher DQLab 100rb</td></tr>
+            <tr><td>4</td><td>Flashdisk DQLab 32 GB</td></tr>
+            <tr><td>5</td><td>Gift Voucher DQLab 250rb</td></tr>
+            <tr><td>6</td><td>Pulpen Multifunction + Laser DQLab</td></tr>
+            <tr><td>7</td><td>Tas Travel Organizer DQLab</td></tr>
+            <tr><td>8</td><td>Gantungan Kunci DQLab</td></tr>
+            <tr><td>9</td><td>Buku Planner Agenda DQLab</td></tr>
+            <tr><td>10</td><td>Sticky Notes DQLab 500 sheets</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="row-count">10 rows in set (0.00 sec)</p>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 5 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 5</span>
+        <span class="quiz-title">Kombinasi Prefix Tabel + Alias</span>
+      </div>
+      <div class="explanation">
+        <p>Prefix nama tabel dan alias kolom bisa digabungkan dalam satu query untuk hasil yang lebih ekspresif dan tidak ambigu.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="kw">SELECT</span> <span class="tbl">ms_produk</span>.<span class="col">harga</span> <span class="kw">AS</span> harga_jual
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span>;</pre>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- QUIZ 6 & 7 -->
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">QUIZ 6 &amp; 7</span>
+        <span class="quiz-title">Alias untuk Tabel</span>
+      </div>
+      <div class="explanation">
+        <p>Tidak hanya kolom, tabel pun bisa diberi alias. Alias tabel ditulis langsung setelah nama tabel (tanpa AS, meski AS juga boleh). Alias tabel sangat berguna dalam konteks JOIN atau subquery untuk mempersingkat penulisan.</p>
+      </div>
+      <div class="code-wrap">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-lang">SQL</span>
+        </div>
+        <pre><span class="cm">-- Quiz 6: Semua kolom dengan alias tabel t2</span>
+<span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="tbl">ms_produk</span> t2;
+
+<span class="cm">-- Quiz 7: Kolom tertentu dengan alias tabel t2</span>
+<span class="kw">SELECT</span> <span class="col">nama_produk</span>, <span class="col">harga</span>
+<span class="kw">FROM</span> <span class="tbl">ms_produk</span> t2;</pre>
+      </div>
+      <div class="tip">Alias tabel tidak mengubah nama tabel asli di database, hanya berlaku selama eksekusi query tersebut.</div>
+    </div>
+
+  </div>
+
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part1.html">← Part 01</a>
+      <a href="index.html">Home</a>
+      <a href="part3.html">Part 03 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

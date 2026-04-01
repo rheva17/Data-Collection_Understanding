@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Basis Data — Viona Rhema Agape</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #7cffe8;
+    --accent2: #ff6b6b;
+    --accent3: #ffd93d;
+    --text: #e8e8f0;
+    --muted: #6b6b88;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,255,232,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,255,232,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    padding: 80px 0 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 2px;
+    margin-bottom: 24px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  h1 {
+    font-family: var(--sans);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 16px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.3s;
+  }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-num {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* Parts list */
+  .parts-section {
+    padding: 60px 0;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards 0.5s;
+  }
+
+  .parts-grid {
+    display: grid;
+    gap: 2px;
+  }
+
+  .part-card {
+    display: grid;
+    grid-template-columns: 64px 1fr auto;
+    align-items: center;
+    gap: 24px;
+    padding: 24px 28px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  .part-card:hover {
+    border-color: var(--accent);
+    background: rgba(124,255,232,0.04);
+    transform: translateX(4px);
+  }
+
+  .part-card::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    transform: scaleY(0);
+    transition: transform 0.25s ease;
+  }
+
+  .part-card:hover::before { transform: scaleY(1); }
+
+  .part-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+  }
+
+  .part-num strong {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+
+  .part-info {}
+
+  .part-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+
+  .part-desc {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .part-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-green { background: rgba(124,255,232,0.1); color: var(--accent); border: 1px solid rgba(124,255,232,0.2); }
+  .tag-red   { background: rgba(255,107,107,0.1); color: var(--accent2); border: 1px solid rgba(255,107,107,0.2); }
+  .tag-yellow{ background: rgba(255,217,61,0.1);  color: var(--accent3); border: 1px solid rgba(255,217,61,0.2); }
+
+  .arrow {
+    color: var(--muted);
+    font-size: 18px;
+    transition: color 0.2s, transform 0.2s;
+    margin-left: 8px;
+  }
+
+  .part-card:hover .arrow { color: var(--accent); transform: translateX(4px); }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .part-card { grid-template-columns: 48px 1fr; }
+    .part-tags { display: none; }
+    .stats { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">MySQL · DQLab · 2024</div>
+    <h1>Basis<br/><span>Data</span></h1>
+    <p class="subtitle">// Viona Rhema Agape — Latihan Lengkap SQL</p>
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-num">10</span>
+        <span class="stat-label">Parts</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">30+</span>
+        <span class="stat-label">Queries</span>
+      </div>
+      <div class="stat">
+        <span class="stat-num">5+</span>
+        <span class="stat-label">Tabel</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="parts-section">
+    <p class="section-label">// Pilih materi</p>
+    <div class="parts-grid">
+
+      <a href="part1.html" class="part-card" style="animation-delay:0.55s">
+        <div class="part-num"><strong>01</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">SELECT & LIMIT</div>
+          <div class="part-desc">Dasar pengambilan data dari tabel</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-green">SELECT</span>
+            <span class="tag tag-green">LIMIT</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part2.html" class="part-card" style="animation-delay:0.62s">
+        <div class="part-num"><strong>02</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">DISTINCT, Prefix & Alias</div>
+          <div class="part-desc">Hapus duplikat, prefix tabel, penamaan kolom</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-green">DISTINCT</span>
+            <span class="tag tag-yellow">AS</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part3.html" class="part-card" style="animation-delay:0.69s">
+        <div class="part-num"><strong>03</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">WHERE & Operator Logika</div>
+          <div class="part-desc">Filter data dengan AND, OR, dan perbandingan</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-red">WHERE</span>
+            <span class="tag tag-red">AND/OR</span>
+            <span class="tag tag-yellow">ORDER BY</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part4.html" class="part-card" style="animation-delay:0.76s">
+        <div class="part-num"><strong>04</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">Fungsi Bawaan MySQL</div>
+          <div class="part-desc">Fungsi matematis, string, dan agregat</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-green">MOD/EXP</span>
+            <span class="tag tag-green">UPPER/LOWER</span>
+            <span class="tag tag-yellow">MIN/MAX</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part5.html" class="part-card" style="animation-delay:0.83s">
+        <div class="part-num"><strong>05</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">CASE WHEN</div>
+          <div class="part-desc">Logika kondisional dalam query SQL</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-red">CASE WHEN</span>
+            <span class="tag tag-yellow">GROUP BY</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part6.html" class="part-card" style="animation-delay:0.90s">
+        <div class="part-num"><strong>06</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">JOIN Tabel</div>
+          <div class="part-desc">Menggabungkan data dari dua tabel berbeda</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-red">INNER JOIN</span>
+            <span class="tag tag-green">ON</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part7.html" class="part-card" style="animation-delay:0.97s">
+        <div class="part-num"><strong>07</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">UNION & Subquery</div>
+          <div class="part-desc">Gabungkan hasil query dan filter bertingkat</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-yellow">UNION ALL</span>
+            <span class="tag tag-red">IN</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part8.html" class="part-card" style="animation-delay:1.04s">
+        <div class="part-num"><strong>08</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">Project — Database Design</div>
+          <div class="part-desc">Desain skema tabel nyata: Customer, Invoice, Payment</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-green">Schema</span>
+            <span class="tag tag-yellow">phpMyAdmin</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part9.html" class="part-card" style="animation-delay:1.11s">
+        <div class="part-num"><strong>09</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">Export CSV</div>
+          <div class="part-desc">Ekspor data tabel ke format CSV</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-green">CSV</span>
+            <span class="tag tag-green">Export</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+      <a href="part10.html" class="part-card" style="animation-delay:1.18s">
+        <div class="part-num"><strong>10</strong>PART</div>
+        <div class="part-info">
+          <div class="part-title">GROUP BY & HAVING</div>
+          <div class="part-desc">Agregasi data dan filter setelah pengelompokan</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px">
+          <div class="part-tags">
+            <span class="tag tag-red">GROUP BY</span>
+            <span class="tag tag-red">HAVING</span>
+            <span class="tag tag-yellow">SUM</span>
+          </div>
+          <span class="arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <footer>
+    <span>Basis Data © 2024 — Viona Rhema Agape</span>
+    <span>MySQL · DQLab</span>
+  </footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 8 — Project Database Design | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+<style>
+  .schema-grid { display:grid; gap:16px; margin-bottom:24px; }
+  .schema-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .schema-head {
+    padding: 12px 18px;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .schema-icon {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+  .schema-name {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .schema-body { padding: 0; }
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 08</span>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 08 — Project Akhir</div>
+    <h1 class="page-title">Database<br/><span>Design</span></h1>
+    <p class="hero-desc">Merancang dan mengisi skema database nyata menggunakan phpMyAdmin, mencakup tabel Customer, Invoice, Payment, Product, dan Subscription.</p>
+  </div>
+  <div class="content">
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">PROJECT</span>
+        <span class="quiz-title">Skema Database — project_analisisdata</span>
+      </div>
+      <div class="explanation">
+        <p>Pada Part 8, dibuat sebuah database bernama <code>project_analisisdata</code> yang terdiri dari 5 tabel yang saling berelasi, merepresentasikan sistem layanan internet sederhana.</p>
+      </div>
+
+      <div class="schema-grid">
+
+        <!-- Customer -->
+        <div class="schema-card">
+          <div class="schema-head">
+            <div class="schema-icon"></div>
+            <span class="schema-name">customer</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto">20+ records</span>
+          </div>
+          <div class="schema-body">
+            <div class="result-wrap" style="border:none;border-radius:0;margin:0">
+              <table>
+                <thead><tr><th>id</th><th>name</th><th>address</th><th>gender</th><th>phone</th><th>email</th><th>dob</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Viona Rhema - 18153</td><td>Psr. Jayawijaya No. 913, Suwahlunto 10252, SulTeng</td><td>Female</td><td>6297686807043</td><td>wanit@gmail.com</td><td>1993-05-10</td></tr>
+                  <tr><td>2</td><td>Luwes Putra S.I.Kom</td><td>Ki. Yap Tjwan Bing No. 971, Cilegon 53283, Maluku</td><td>Male</td><td>6298481943662</td><td>luwespom@gmail.com</td><td>1999-04-17</td></tr>
+                  <tr><td>3</td><td>Prasetya Karsa Mustofa S.Ked</td><td>Psr. Bakin No. 775, Kotamobagu 62174, Lampung</td><td>Male</td><td>625420486562</td><td>praseted@gmail.com</td><td>1994-02-03</td></tr>
+                  <tr><td colspan="7" style="text-align:center;color:var(--muted);font-style:italic">... 20+ baris lainnya</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product -->
+        <div class="schema-card">
+          <div class="schema-head">
+            <div class="schema-icon" style="background:var(--accent3)"></div>
+            <span class="schema-name" style="color:var(--accent3)">product</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto">5 records</span>
+          </div>
+          <div class="schema-body">
+            <div class="result-wrap" style="border:none;border-radius:0;margin:0">
+              <table>
+                <thead><tr><th>id</th><th>product_name</th><th>price</th><th>speed_limit</th><th>date_active</th><th>end_active</th><th>active</th></tr></thead>
+                <tbody>
+                  <tr><td>10001</td><td>Viona Rhema - 18153</td><td>100000</td><td>10</td><td>2018-10-01</td><td>2099-12-31</td><td>1</td></tr>
+                  <tr><td>10002</td><td>Family Package</td><td>250000</td><td>30</td><td>2018-10-01</td><td>2099-12-31</td><td>1</td></tr>
+                  <tr><td>10003</td><td>Faster Package</td><td>300000</td><td>50</td><td>2018-10-01</td><td>2099-12-31</td><td>1</td></tr>
+                  <tr><td>10004</td><td>Gamer Package</td><td>500000</td><td>100</td><td>2018-10-01</td><td>2099-12-31</td><td>1</td></tr>
+                  <tr><td>10005</td><td>Bussines Package</td><td>1200000</td><td>500</td><td>2018-12-01</td><td>2099-12-31</td><td>1</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice -->
+        <div class="schema-card">
+          <div class="schema-head">
+            <div class="schema-icon" style="background:var(--accent2)"></div>
+            <span class="schema-name" style="color:var(--accent2)">invoice</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto">23+ records</span>
+          </div>
+          <div class="schema-body">
+            <div class="result-wrap" style="border:none;border-radius:0;margin:0">
+              <table>
+                <thead><tr><th>invoice_id</th><th>invoice_code</th><th>customer_id</th><th>invoice_date</th><th>product_id</th><th>total_price</th><th>pinalty</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Viona Rhema - 18153</td><td>1</td><td>2018-10-05</td><td>10001</td><td>100000</td><td>0</td></tr>
+                  <tr><td>2</td><td>INV-43379-2</td><td>2</td><td>2018-10-06</td><td>10001</td><td>100000</td><td>0</td></tr>
+                  <tr><td>3</td><td>INV-43380-3</td><td>3</td><td>2018-10-07</td><td>10003</td><td>300000</td><td>0</td></tr>
+                  <tr><td>6</td><td>INV-43383-6</td><td>6</td><td>2018-10-10</td><td>10004</td><td>500000</td><td>0</td></tr>
+                  <tr><td>21</td><td>INV-43398-21</td><td>21</td><td>2018-10-25</td><td>10005</td><td>1200000</td><td>0</td></tr>
+                  <tr><td colspan="7" style="text-align:center;color:var(--muted);font-style:italic">... dan seterusnya</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Subscription -->
+        <div class="schema-card">
+          <div class="schema-head">
+            <div class="schema-icon" style="background:#c9cbff"></div>
+            <span class="schema-name" style="color:#c9cbff">subscription</span>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-left:auto">20+ records</span>
+          </div>
+          <div class="schema-body">
+            <div class="result-wrap" style="border:none;border-radius:0;margin:0">
+              <table>
+                <thead><tr><th>id</th><th>customer_id</th><th>product_id</th><th>start_date</th><th>end_date</th><th>sub_days</th><th>status</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>Viona Rhema - 18153</td><td>10001</td><td>2018-10-05</td><td>2018-12-03</td><td>59</td><td style="color:var(--accent2)">ENDED</td></tr>
+                  <tr><td>2</td><td>2</td><td>10001</td><td>2018-10-06</td><td>2099-12-31</td><td>NULL</td><td style="color:var(--accent)">ACTIVE</td></tr>
+                  <tr><td>7</td><td>7</td><td>10002</td><td>2018-10-11</td><td>2018-12-30</td><td>80</td><td style="color:var(--accent2)">ENDED</td></tr>
+                  <tr><td>12</td><td>12</td><td>10002</td><td>2018-10-16</td><td>2018-12-20</td><td>65</td><td style="color:var(--accent2)">ENDED</td></tr>
+                  <tr><td colspan="7" style="text-align:center;color:var(--muted);font-style:italic">... dan seterusnya</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- schema-grid -->
+
+      <div class="tip">Pada Part 8 seluruh tabel dibuat dan diisi langsung via phpMyAdmin. Relasi antar tabel: customer.id → invoice.customer_id → payment.invoice_id, dan customer.id → subscription.customer_id.</div>
+
+    </div>
+  </div>
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part7.html">← Part 07</a>
+      <a href="index.html">Home</a>
+      <a href="part9.html">Part 09 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>

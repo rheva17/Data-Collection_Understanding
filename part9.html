@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 9 — Export CSV | Basis Data</title>
+<link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-back">← Kembali ke Daftar</a>
+    <span class="nav-part">PART 09</span>
+  </div>
+</nav>
+<div class="container">
+  <div class="hero">
+    <div class="hero-meta">Part 09 — Export Data</div>
+    <h1 class="page-title">Export<br/><span>CSV</span></h1>
+    <p class="hero-desc">Mengekspor data dari tabel database ke format CSV (Comma-Separated Values) menggunakan fitur Export di phpMyAdmin.</p>
+  </div>
+  <div class="content">
+
+    <div class="quiz-section">
+      <div class="quiz-label">
+        <span class="quiz-num">TASK</span>
+        <span class="quiz-title">Export Tabel ke Format CSV</span>
+      </div>
+      <div class="explanation">
+        <p>CSV (Comma-Separated Values) adalah format file teks sederhana di mana setiap baris merepresentasikan satu record dan setiap kolom dipisahkan oleh koma. Format ini sangat kompatibel dengan Excel, Google Sheets, dan berbagai tools analisis data.</p>
+        <p>Cara export via phpMyAdmin: pilih tabel → klik tab <strong style="color:var(--accent)">Export</strong> → pilih format <strong style="color:var(--accent)">CSV</strong> → klik Go.</p>
+      </div>
+
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:24px;margin-bottom:20px;">
+        <p style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:16px;letter-spacing:0.1em">// CONTOH ISI FILE CSV</p>
+        <pre style="background:var(--code-bg);border:1px solid var(--border);border-radius:3px;padding:16px;font-family:var(--mono);font-size:12px;color:#a6e3a1;overflow-x:auto">"id","name","address","gender","phone","email","dob"
+"1","Viona Rhema - 18153","Psr. Jayawijaya No. 913","Female","6297686807043","wanit@gmail.com","1993-05-10"
+"2","Luwes Putra S.I.Kom","Ki. Yap Tjwan Bing No. 971","Male","6298481943662","luwespom@gmail.com","1999-04-17"
+"3","Prasetya Karsa Mustofa","Psr. Bakin No. 775","Male","625420486562","praseted@gmail.com","1994-02-03"
+...</pre>
+      </div>
+
+      <div class="tip">Hasil export CSV tersedia di Google Drive: <a href="https://drive.google.com/drive/folders/1gP2gzO4tVRrY13brgI0d9qY5NAUILJTR" target="_blank" style="color:var(--accent);text-decoration:none">drive.google.com → folder project_analisisdata</a></div>
+
+      <p class="result-label">// Langkah Export di phpMyAdmin</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-bottom:20px">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:11px;color:var(--muted)">// STEPS</div>
+        <div style="padding:20px 18px;display:flex;flex-direction:column;gap:12px;font-family:var(--mono);font-size:13px;">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="background:var(--accent);color:#0a0a0f;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</span>
+            <span style="color:#c0c0d8">Buka phpMyAdmin → pilih database <code style="color:var(--accent)">project_analisisdata</code></span>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="background:var(--accent);color:#0a0a0f;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</span>
+            <span style="color:#c0c0d8">Klik nama tabel yang ingin diekspor (misal: <code style="color:var(--accent)">customer</code>)</span>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="background:var(--accent);color:#0a0a0f;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</span>
+            <span style="color:#c0c0d8">Klik tab <code style="color:var(--accent3)">Export</code> di menu atas</span>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="background:var(--accent);color:#0a0a0f;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">4</span>
+            <span style="color:#c0c0d8">Pilih format <code style="color:var(--accent3)">CSV</code> → klik tombol <code style="color:var(--accent)">Go</code></span>
+          </div>
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="background:var(--accent);color:#0a0a0f;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">5</span>
+            <span style="color:#c0c0d8">File CSV akan otomatis terunduh. Lakukan untuk semua tabel.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <footer>
+    <span>Viona Rhema Agape</span>
+    <div class="footer-nav">
+      <a href="part8.html">← Part 08</a>
+      <a href="index.html">Home</a>
+      <a href="part10.html">Part 10 →</a>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
