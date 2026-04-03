@@ -1,56 +1,3 @@
-<<<<<<< HEAD
-# Basis Data — Viona Rhema Agape
-
-Web dokumentasi latihan SQL DQLab, dibuat untuk GitHub Pages.
-
-## 📁 Struktur File
-
-```
-├── index.html      ← Homepage (daftar semua Part)
-├── style.css       ← Shared stylesheet (dipakai semua halaman)
-├── part1.html      ← Part 1: SELECT & LIMIT
-├── part2.html      ← Part 2: DISTINCT, Prefix & Alias
-├── part3.html      ← Part 3: WHERE & Operator Logika
-├── part4.html      ← Part 4: Fungsi Bawaan MySQL
-├── part5.html      ← Part 5: CASE WHEN
-├── part6.html      ← Part 6: JOIN Tabel
-├── part7.html      ← Part 7: UNION & Subquery
-├── part8.html      ← Part 8: Project Database Design
-├── part9.html      ← Part 9: Export CSV
-└── part10.html     ← Part 10: GROUP BY & HAVING
-```
-
-## 🚀 Deploy ke GitHub Pages
-
-### Langkah 1 — Buat Repository
-1. Buka github.com → klik tombol **New repository**
-2. Nama repository: `basis-data` (atau nama apapun)
-3. Set ke **Public**
-4. Klik **Create repository**
-
-### Langkah 2 — Upload File
-1. Di halaman repository → klik **Add file** → **Upload files**
-2. Drag & drop SEMUA file (index.html, style.css, part1.html ... part10.html)
-3. Klik **Commit changes**
-
-### Langkah 3 — Aktifkan GitHub Pages
-1. Buka tab **Settings** di repository
-2. Di sidebar kiri → klik **Pages**
-3. Di bagian **Source** → pilih **Deploy from a branch**
-4. Branch: **main**, Folder: **/ (root)**
-5. Klik **Save**
-
-### Langkah 4 — Akses Web
-Setelah 1-2 menit, web tersedia di:
-```
-https://[username].github.io/[nama-repository]/
-```
-
-Contoh: `https://vionarhema.github.io/basis-data/`
-
----
-© 2024 Viona Rhema Agape
-=======
 # 📦 Latihan Basis Data (MySQL)
 
 Repository ini berisi dokumentasi hasil latihan **Basis Data** menggunakan MySQL, mencakup materi dari konsep dasar hingga query lanjutan.
@@ -356,4 +303,3 @@ HAVING total > 1500;
 ## 📌 Catatan
 
 Repository ini dibuat sebagai dokumentasi latihan mandiri mata kuliah Basis Data.
->>>>>>> e5586a0428ed4762ee00ef0861905b80185d0d43
