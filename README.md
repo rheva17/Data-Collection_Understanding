@@ -302,4 +302,4 @@ HAVING total > 1500;
 
 ## 📌 Catatan
 
-Repository ini dibuat sebagai dokumentasi latihan mandiri mata kuliah Basis Data.
+Repository ini dibuat sebagai dokumentasi latihan mandiri Basis Data
