@@ -3,6 +3,7 @@
 Repository ini berisi dokumentasi hasil latihan **Basis Data** menggunakan MySQL, mencakup materi dari konsep dasar hingga query lanjutan.
 
 > **Nama:** Viona Rhema Agape
+> You can check full documentation in my pages : https://rheva17.github.io/Data-Collection_Understanding/ 
 
 ---
 
